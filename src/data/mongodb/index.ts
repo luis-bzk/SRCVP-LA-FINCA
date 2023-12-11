@@ -9,4 +9,4 @@ export * from './models/public-data.model';
 export * from './models/company.model';
 export * from './models/membership.model';
 export * from './models/address.model';
-export * from './models/categoery.model';
+export * from './models/category.model';
