@@ -29,6 +29,7 @@ export class CategoryDataSourceImpl implements CategoryDataSource {
       throw CustomError.internalServer();
     }
   }
+
   async update(updateCategoryDto: UpdateCategoryDto): Promise<Category> {
     const { id, name, description } = updateCategoryDto;
 

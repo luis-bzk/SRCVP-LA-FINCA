@@ -1,5 +1,5 @@
-import { CreateCategoryDto } from '../../dtos/category';
 import { Category } from '../../entities';
+import { CreateCategoryDto } from '../../dtos/category';
 import { CategoryRepository } from '../../repositories';
 
 interface CreateCategoryUseCase {
