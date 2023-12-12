@@ -53,4 +53,6 @@ export class CategoryController {
       .then((data) => res.status(200).json(data))
       .catch((error) => this.handleError(error, res));
   };
+
+  deleteCategory = (req: Request, res: Response) => {};
 }

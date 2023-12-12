@@ -4,7 +4,7 @@ import { CategoryModel } from '../../data';
 import { CustomError } from '../../domain/errors';
 import { CategoryMapper } from '../mappers/category.mapper';
 import { CategoryDataSource } from '../../domain/dataSources';
-import { CreateCategoryDto, GetCategoryDto, UpdateCategoryDto } from '../../domain/dtos/category';
+import { CreateCategoryDto, DeleteCategoryDto, GetCategoryDto, UpdateCategoryDto } from '../../domain/dtos/category';
 
 export class CategoryDataSourceImpl implements CategoryDataSource {
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
@@ -80,6 +80,29 @@ export class CategoryDataSourceImpl implements CategoryDataSource {
     try {
       const categories = await CategoryModel.find().lean();
       return CategoryMapper.entitiesFromObject(categories);
+    } catch (error) {
+      if (error instanceof CustomError) {
+        throw error;
+      }
+
+      console.log(error);
+      throw CustomError.internalServer();
+    }
+  }
+
+  async delete(deleteCategoryDto: DeleteCategoryDto): Promise<{}> {
+    const { id } = deleteCategoryDto;
+
+    try {
+      const exists = await CategoryModel.findById(id).lean();
+      if (!exists) throw CustomError.notFound('La categoría no se encuentra registrada en el sistema');
+
+      const deleted = await CategoryModel.deleteOne({ _id: id });
+      if (deleted.deletedCount === 0) {
+        throw CustomError.notFound('No se pudo eliminar la categoría');
+      }
+
+      return {};
     } catch (error) {
       if (error instanceof CustomError) {
         throw error;

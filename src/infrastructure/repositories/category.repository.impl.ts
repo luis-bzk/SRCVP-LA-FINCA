@@ -1,6 +1,6 @@
 import { Category } from '../../domain/entities';
 import { CategoryDataSource } from '../../domain/dataSources';
-import { CreateCategoryDto, GetCategoryDto, UpdateCategoryDto } from '../../domain/dtos/category';
+import { CreateCategoryDto, DeleteCategoryDto, GetCategoryDto, UpdateCategoryDto } from '../../domain/dtos/category';
 import { CategoryRepository } from '../../domain/repositories';
 
 export class CategoryRepositoryImpl implements CategoryRepository {
@@ -20,5 +20,8 @@ export class CategoryRepositoryImpl implements CategoryRepository {
 
   getAll(): Promise<Category[]> {
     return this.categoryDataSource.getAll();
+  }
+  delete(deleteCategoryDto: DeleteCategoryDto): Promise<{}> {
+    return this.categoryDataSource.delete(deleteCategoryDto);
   }
 }
