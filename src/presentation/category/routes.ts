@@ -16,6 +16,7 @@ export class CategoryRoutes {
     router.post('/create', controller.createCategory);
     router.put('/update/:id', controller.updateCategory);
     router.get('/get/:id', controller.getCategory);
+    router.get('/all', controller.getAllCategories);
 
     return router;
   }

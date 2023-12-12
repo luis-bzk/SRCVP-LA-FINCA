@@ -17,4 +17,8 @@ export class CategoryRepositoryImpl implements CategoryRepository {
   get(getCategoryDto: GetCategoryDto): Promise<Category> {
     return this.categoryDataSource.get(getCategoryDto);
   }
+
+  getAll(): Promise<Category[]> {
+    return this.categoryDataSource.getAll();
+  }
 }

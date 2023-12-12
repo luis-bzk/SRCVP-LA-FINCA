@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { CustomError } from '../../domain/errors';
 import { CategoryRepository } from '../../domain/repositories';
 import { CreateCategoryDto, GetCategoryDto, UpdateCategoryDto } from '../../domain/dtos';
-import { CreateCategory, GetCategory, UpdateCategory } from '../../domain/use-cases';
+import { CreateCategory, GetAllCategories, GetCategory, UpdateCategory } from '../../domain/use-cases';
 
 export class CategoryController {
   constructor(private readonly categoryRepository: CategoryRepository) {}
@@ -43,6 +43,13 @@ export class CategoryController {
 
     new GetCategory(this.categoryRepository)
       .execute(getCategoryDto!)
+      .then((data) => res.status(200).json(data))
+      .catch((error) => this.handleError(error, res));
+  };
+
+  getAllCategories = (_req: Request, res: Response) => {
+    new GetAllCategories(this.categoryRepository)
+      .execute()
       .then((data) => res.status(200).json(data))
       .catch((error) => this.handleError(error, res));
   };

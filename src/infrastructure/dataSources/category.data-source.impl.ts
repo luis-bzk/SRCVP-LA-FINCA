@@ -75,4 +75,18 @@ export class CategoryDataSourceImpl implements CategoryDataSource {
       throw CustomError.internalServer();
     }
   }
+
+  async getAll(): Promise<Category[]> {
+    try {
+      const categories = await CategoryModel.find().lean();
+      return CategoryMapper.entitiesFromObject(categories);
+    } catch (error) {
+      if (error instanceof CustomError) {
+        throw error;
+      }
+
+      console.log(error);
+      throw CustomError.internalServer();
+    }
+  }
 }
