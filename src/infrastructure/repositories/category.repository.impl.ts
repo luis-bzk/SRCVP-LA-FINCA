@@ -1,6 +1,6 @@
 import { Category } from '../../domain/entities';
 import { CategoryDataSource } from '../../domain/dataSources';
-import { CreateCategoryDto, UpdateCategoryDto } from '../../domain/dtos/category';
+import { CreateCategoryDto, GetCategoryDto, UpdateCategoryDto } from '../../domain/dtos/category';
 import { CategoryRepository } from '../../domain/repositories';
 
 export class CategoryRepositoryImpl implements CategoryRepository {
@@ -12,5 +12,9 @@ export class CategoryRepositoryImpl implements CategoryRepository {
 
   update(updateCategoryDto: UpdateCategoryDto): Promise<Category> {
     return this.categoryDataSource.update(updateCategoryDto);
+  }
+
+  get(getCategoryDto: GetCategoryDto): Promise<Category> {
+    return this.categoryDataSource.get(getCategoryDto);
   }
 }

@@ -4,7 +4,7 @@ import { CategoryModel } from '../../data';
 import { CustomError } from '../../domain/errors';
 import { CategoryMapper } from '../mappers/category.mapper';
 import { CategoryDataSource } from '../../domain/dataSources';
-import { CreateCategoryDto, UpdateCategoryDto } from '../../domain/dtos/category';
+import { CreateCategoryDto, GetCategoryDto, UpdateCategoryDto } from '../../domain/dtos/category';
 
 export class CategoryDataSourceImpl implements CategoryDataSource {
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
@@ -48,6 +48,24 @@ export class CategoryDataSourceImpl implements CategoryDataSource {
       const updated = await exists.save();
 
       return CategoryMapper.entityFromObject(updated);
+    } catch (error) {
+      if (error instanceof CustomError) {
+        throw error;
+      }
+
+      console.log(error);
+      throw CustomError.internalServer();
+    }
+  }
+
+  async get(getCategoryDto: GetCategoryDto): Promise<Category> {
+    const { id } = getCategoryDto;
+
+    try {
+      const category = await CategoryModel.findById(id).lean();
+      if (!category) throw CustomError.notFound('La categoría no se encuentra registrada en el sistema');
+
+      return CategoryMapper.entityFromObject(category);
     } catch (error) {
       if (error instanceof CustomError) {
         throw error;
