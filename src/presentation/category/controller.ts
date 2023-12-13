@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 
 import { CustomError } from '../../domain/errors';
 import { CategoryRepository } from '../../domain/repositories';
-import { CreateCategoryDto, GetCategoryDto, UpdateCategoryDto } from '../../domain/dtos';
-import { CreateCategory, GetAllCategories, GetCategory, UpdateCategory } from '../../domain/use-cases';
+import { CreateCategoryDto, DeleteCategoryDto, GetCategoryDto, UpdateCategoryDto } from '../../domain/dtos';
+import { CreateCategory, DeleteCategory, GetAllCategories, GetCategory, UpdateCategory } from '../../domain/use-cases';
 
 export class CategoryController {
   constructor(private readonly categoryRepository: CategoryRepository) {}
@@ -54,5 +54,13 @@ export class CategoryController {
       .catch((error) => this.handleError(error, res));
   };
 
-  deleteCategory = (req: Request, res: Response) => {};
+  deleteCategory = (req: Request, res: Response) => {
+    const [error, deleteCategoryDto] = DeleteCategoryDto.create(req.params.id);
+    if (error) return res.status(400).json({ error });
+
+    new DeleteCategory(this.categoryRepository)
+      .execute(deleteCategoryDto!)
+      .then((data) => res.status(200).json(data))
+      .catch((error) => this.handleError(error, res));
+  };
 }

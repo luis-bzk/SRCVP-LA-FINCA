@@ -17,6 +17,7 @@ export class CategoryRoutes {
     router.put('/update/:id', controller.updateCategory);
     router.get('/get/:id', controller.getCategory);
     router.get('/all', controller.getAllCategories);
+    router.delete('/delete/:id', controller.deleteCategory);
 
     return router;
   }
