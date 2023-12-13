@@ -10,3 +10,4 @@ export * from './models/company.model';
 export * from './models/membership.model';
 export * from './models/address.model';
 export * from './models/category.model';
+export * from './models/product.model';

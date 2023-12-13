@@ -8,3 +8,4 @@ export * from './company.entity';
 export * from './membership.entity';
 export * from './address.entity';
 export * from './category.entity';
+export * from './product.entity';
