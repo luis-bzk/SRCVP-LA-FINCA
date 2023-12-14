@@ -8,3 +8,4 @@ export * from './publicUserData';
 export * from './company';
 export * from './address';
 export * from './category';
+export * from './product';
