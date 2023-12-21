@@ -8,3 +8,4 @@ export * from './public-user-data.repository.impl';
 export * from './company.repository.impl';
 export * from './address.repository.impl';
 export * from './category.repository.impl';
+export * from './product.repository.impl';

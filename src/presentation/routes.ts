@@ -9,6 +9,7 @@ import { CompanyRoutes } from './company/routes';
 import { AddressRoutes } from './address/routes';
 import { ProvincesRoutes } from './province/routes';
 import { CategoryRoutes } from './category/routes';
+import { ProductRoutes } from './product/routes';
 import { PublicUserDataRoutes } from './public-user-data/routes';
 
 export class AppRoutes {
@@ -26,6 +27,8 @@ export class AppRoutes {
     router.use('/api/public-user-data', PublicUserDataRoutes.getRoutes);
     router.use('/api/companies', CompanyRoutes.getRoutes);
     router.use('/api/categories', CategoryRoutes.getRoutes);
+    // TODO: PRODUCTS
+    router.post('/api/products', ProductRoutes.getRoutes);
 
     router.use((_req: Request, res: Response, _next: NextFunction) => {
       res.status(404).json({ error: 'La ruta solicitada no existe' });

@@ -8,3 +8,4 @@ export * from './public-user-data.dataSource.impl';
 export * from './company.data-source.impl';
 export * from './address.data-source.impl';
 export * from './category.data-source.impl';
+export * from './product.data-source.impl';
