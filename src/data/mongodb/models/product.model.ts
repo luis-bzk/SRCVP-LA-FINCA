@@ -15,11 +15,6 @@ const productSchema = new Schema(
       type: String,
       required: [true, 'Description is required'],
     },
-    images: [
-      {
-        type: String,
-      },
-    ],
     tags: [
       {
         type: String,

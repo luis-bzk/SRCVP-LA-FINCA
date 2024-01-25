@@ -3,7 +3,6 @@ interface Entity {
   name: String;
   slug: string;
   description: string;
-  images: string[];
   tags: string[];
   base_price: number;
   discount: number;
@@ -22,7 +21,6 @@ export class Product {
   public name: String;
   public slug: string;
   public description: string;
-  public images: string[];
   public tags: string[];
   public base_price: number;
   public discount: number;
@@ -40,7 +38,6 @@ export class Product {
     this.name = entity.name;
     this.slug = entity.slug;
     this.description = entity.description;
-    this.images = entity.images;
     this.tags = entity.tags;
     this.base_price = entity.base_price;
     this.discount = entity.discount;

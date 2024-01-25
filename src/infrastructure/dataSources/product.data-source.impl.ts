@@ -11,7 +11,6 @@ export class ProductDataSourceImpl implements ProductDataSource {
     const {
       name,
       description,
-      images,
       tags,
       base_price,
       discount,
@@ -38,7 +37,6 @@ export class ProductDataSourceImpl implements ProductDataSource {
       const product = await ProductModel.create({
         name,
         description,
-        images,
         tags,
         base_price: costWithoutIVA,
         discount,

@@ -8,7 +8,6 @@ export class ProductMapper {
       name,
       slug,
       description,
-      images,
       tags,
       base_price,
       discount,
@@ -26,7 +25,6 @@ export class ProductMapper {
     if (!name) throw CustomError.badRequest('Falta el nombre del producto');
     if (!slug) throw CustomError.badRequest('Falta el slug del producto');
     if (!description) throw CustomError.badRequest('Falta la descripción del producto');
-    if (!images) throw CustomError.badRequest('Faltan las imágenes del producto');
     if (!tags) throw CustomError.badRequest('Faltan las etiquetas del producto');
     if (!base_price) throw CustomError.badRequest('Falta el precio base del producto');
     if (!discount && discount !== 0) throw CustomError.badRequest('Falta el descuento del producto');
@@ -39,7 +37,6 @@ export class ProductMapper {
       name,
       slug,
       description,
-      images,
       tags,
       base_price,
       discount,

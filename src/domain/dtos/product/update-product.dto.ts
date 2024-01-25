@@ -1,5 +1,8 @@
-export class CreateProductDto {
+import { isValidObjectId } from 'mongoose';
+
+export class UpdateProductDto {
   constructor(
+    public id: string,
     public name: string,
     public description: string,
     public tags: string[],
@@ -14,7 +17,7 @@ export class CreateProductDto {
     public additional_details: string[]
   ) {}
 
-  static create(object: { [key: string]: any }): [string?, CreateProductDto?] {
+  static create(object: { [key: string]: any }, id: string): [string?, UpdateProductDto?] {
     const {
       name,
       description,
@@ -29,6 +32,9 @@ export class CreateProductDto {
       warranty,
       additional_details,
     } = object;
+
+    if (!id) return ['El ID del producto es requerido'];
+    if (!isValidObjectId(id)) return ['El ID del producto no es valido'];
 
     if (!name) return ['El nombre del producto es requerido'];
     if (name.length > 100) return ['El nombre del producto no puede tener mas de 100 caracteres'];
@@ -67,7 +73,8 @@ export class CreateProductDto {
 
     return [
       undefined,
-      new CreateProductDto(
+      new UpdateProductDto(
+        id,
         name,
         description,
         tags,
