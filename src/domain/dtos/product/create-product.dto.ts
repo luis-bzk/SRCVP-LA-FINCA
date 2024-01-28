@@ -1,4 +1,6 @@
-export class CreateProductDto {
+import { BaseProductDto } from './base-product.dto';
+
+export class CreateProductDto extends BaseProductDto {
   constructor(
     public name: string,
     public description: string,
@@ -11,8 +13,10 @@ export class CreateProductDto {
     public bar_code: string,
     public provider: string,
     public warranty: number,
-    public additional_details: string[]
-  ) {}
+    public additional_details: string[],
+  ) {
+    super();
+  }
 
   static create(object: { [key: string]: any }): [string?, CreateProductDto?] {
     const {
@@ -31,14 +35,19 @@ export class CreateProductDto {
     } = object;
 
     if (!name) return ['El nombre del producto es requerido'];
-    if (name.length > 100) return ['El nombre del producto no puede tener mas de 100 caracteres'];
+    if (name.length > 100)
+      return ['El nombre del producto no puede tener mas de 100 caracteres'];
     if (!description) return ['La descripción del producto es requerida'];
-    if (description.length > 400) return ['La descripción del producto no puede tener mas de 400 caracteres'];
+    if (description.length > 400)
+      return [
+        'La descripción del producto no puede tener mas de 400 caracteres',
+      ];
 
     if (!tags) return ['Se require al menos una etiqueta del producto'];
     if (tags.length > 10) return ['Solo se pueden agregar hasta 10 etiquetas'];
     if (!base_price) return ['Se requiere el precio del producto'];
-    if (base_price < 0) return ['El precio del producto no puede ser menor a 0'];
+    if (base_price < 0)
+      return ['El precio del producto no puede ser menor a 0'];
 
     const price_string = base_price.toString();
     const decimalIndex = price_string.indexOf('.');
@@ -46,22 +55,36 @@ export class CreateProductDto {
       return ['El precio no puede tener mas de dos decimales'];
     }
 
-    if (discount && discount < 0) return ['El descuento del producto no puede ser menor al 0%'];
-    if (discount && discount > 100) return ['El descuento no puede ser mayor al 100%'];
-    if (discount && this.validateIsDecimal(discount)) return ['El descuento no puede ser decimal'];
+    if (discount && discount < 0)
+      return ['El descuento del producto no puede ser menor al 0%'];
+    if (discount && discount > 100)
+      return ['El descuento no puede ser mayor al 100%'];
+    if (discount && this.validateIsDecimal(discount))
+      return ['El descuento no puede ser decimal'];
     if (!iva_included && typeof iva_included !== 'boolean')
       return ['Se debe especificar si el precio incluye IVA o no'];
-    if (brand && brand.length > 60) return ['La marca del producto no puede tener mas de 60 caracteres'];
+    if (brand && brand.length > 60)
+      return ['La marca del producto no puede tener mas de 60 caracteres'];
     if (active_ingredient && active_ingredient.length > 60)
-      return ['El principio activo del producto no puede tener mas de 60 caracteres'];
+      return [
+        'El principio activo del producto no puede tener mas de 60 caracteres',
+      ];
     if (bar_code && bar_code.length <= 1)
-      return ['El código de barras del producto no puede tener menos de 1 carácter'];
+      return [
+        'El código de barras del producto no puede tener menos de 1 carácter',
+      ];
     if (bar_code && bar_code.length > 60)
-      return ['El código de barras del producto no puede tener mas de 60 caracteres'];
+      return [
+        'El código de barras del producto no puede tener mas de 60 caracteres',
+      ];
     if (provider && provider.length > 50)
-      return ['El nombre del proveedor del producto no puede tener mas de 50 caracteres'];
-    if (warranty && warranty < 0) return ['La garantía del producto no puede ser menor a 0 días'];
-    if (warranty && this.validateIsDecimal(warranty)) return ['La garantía del producto no puede ser decimal'];
+      return [
+        'El nombre del proveedor del producto no puede tener mas de 50 caracteres',
+      ];
+    if (warranty && warranty < 0)
+      return ['La garantía del producto no puede ser menor a 0 días'];
+    if (warranty && this.validateIsDecimal(warranty))
+      return ['La garantía del producto no puede ser decimal'];
     if (additional_details && additional_details.length > 10)
       return ['El producto no puede tener mas de 10 detalles adicionales'];
 
@@ -79,12 +102,8 @@ export class CreateProductDto {
         bar_code || '',
         provider || '',
         warranty || 0,
-        additional_details || []
+        additional_details || [],
       ),
     ];
-  }
-
-  private static validateIsDecimal(num: number): boolean {
-    return num % 1 !== 0;
   }
 }

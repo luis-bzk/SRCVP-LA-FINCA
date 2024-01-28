@@ -1,7 +1,7 @@
 import { Router } from 'express';
+import { ProductController } from './controller';
 import { ProductDataSourceImpl } from '../../infrastructure/dataSources';
 import { ProductRepositoryImpl } from '../../infrastructure/repositories';
-import { ProductController } from './controller';
 
 export class ProductRoutes {
   static get getRoutes(): Router {
@@ -13,6 +13,7 @@ export class ProductRoutes {
 
     // routes
     router.post('/create', controller.createProduct);
+    router.put('/update/:id', controller.updateProduct);
 
     return router;
   }

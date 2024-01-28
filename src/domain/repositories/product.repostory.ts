@@ -1,6 +1,8 @@
 import { Product } from '../entities';
-import { CreateProductDto } from '../dtos';
+import { CreateProductDto, UpdateProductDto } from '../dtos';
 
 export abstract class ProductRepository {
   abstract create(createProductDto: CreateProductDto): Promise<Product>;
+
+  abstract update(updateProductDto: UpdateProductDto): Promise<Product>;
 }

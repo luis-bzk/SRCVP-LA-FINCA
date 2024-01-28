@@ -1,5 +1,5 @@
-import { CreateProductDto } from '../../dtos';
 import { Product } from '../../entities';
+import { CreateProductDto } from '../../dtos';
 import { ProductRepository } from '../../repositories';
 
 interface CreateProductUseCase {
