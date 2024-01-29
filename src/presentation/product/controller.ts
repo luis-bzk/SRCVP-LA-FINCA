@@ -1,8 +1,16 @@
 import { Request, Response } from 'express';
-import { ProductRepository } from '../../domain/repositories';
 import { CustomError } from '../../domain/errors';
-import { CreateProductDto, UpdateProductDto } from '../../domain/dtos';
-import { CreateProduct, UpdateProduct } from '../../domain/use-cases';
+import { ProductRepository } from '../../domain/repositories';
+import {
+  CreateProduct,
+  DeleteProduct,
+  UpdateProduct,
+} from '../../domain/use-cases';
+import {
+  CreateProductDto,
+  DeleteProductDto,
+  UpdateProductDto,
+} from '../../domain/dtos';
 
 export class ProductController {
   constructor(private readonly productRepository: ProductRepository) {}
@@ -37,6 +45,16 @@ export class ProductController {
     new UpdateProduct(this.productRepository)
       .execute(updateProductDto!)
       .then((data) => res.status(200).json(data))
+      .catch((error) => this.handleError(error, res));
+  };
+
+  deleteProduct = (req: Request, res: Response) => {
+    const [error, deleteProductDto] = DeleteProductDto.create(req.params.id);
+    if (error) return res.status(400).json({ error });
+
+    new DeleteProduct(this.productRepository)
+      .execute(deleteProductDto!)
+      .then((data) => res.status(204).json(data))
       .catch((error) => this.handleError(error, res));
   };
 }

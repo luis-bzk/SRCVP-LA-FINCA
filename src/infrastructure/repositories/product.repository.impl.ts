@@ -1,5 +1,9 @@
 import { Product } from '../../domain/entities';
-import { CreateProductDto, UpdateProductDto } from '../../domain/dtos';
+import {
+  CreateProductDto,
+  DeleteProductDto,
+  UpdateProductDto,
+} from '../../domain/dtos';
 import { ProductRepository } from '../../domain/repositories';
 import { ProductDataSource } from '../../domain/dataSources';
 
@@ -12,5 +16,9 @@ export class ProductRepositoryImpl implements ProductRepository {
 
   async update(updateProductDto: UpdateProductDto): Promise<Product> {
     return this.productDataSource.update(updateProductDto);
+  }
+
+  async delete(deleteProductDto: DeleteProductDto): Promise<{}> {
+    return this.productDataSource.delete(deleteProductDto);
   }
 }

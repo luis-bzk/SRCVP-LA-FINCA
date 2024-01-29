@@ -5,21 +5,36 @@ import { CustomError } from '../../domain/errors';
 import { RoleModel, UserModel } from '../../data';
 import { UsersDataSource } from '../../domain/dataSources';
 import { generatePassword, tokenGenerator } from '../../utils';
-import { CreateUserDto, DeleteUserDto, GetUserDto, UpdateUserDto } from '../../domain/dtos';
+import {
+  CreateUserDto,
+  DeleteUserDto,
+  GetUserDto,
+  UpdateUserDto,
+} from '../../domain/dtos';
 
 type HashFunction = (password: string) => string;
 
 export class UsersDataSourceImpl implements UsersDataSource {
-  constructor(private readonly hashPassword: HashFunction = BcryptAdapter.hash) {}
+  constructor(
+    private readonly hashPassword: HashFunction = BcryptAdapter.hash,
+  ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<{ user: User; password: string }> {
+  async create(
+    createUserDto: CreateUserDto,
+  ): Promise<{ user: User; password: string }> {
     const { name, lastName, email } = createUserDto;
     try {
       const exists = await UserModel.findOne({ email });
-      if (exists) throw CustomError.badRequest('Ya existe un usuario registrado con el correo electrónico');
+      if (exists)
+        throw CustomError.badRequest(
+          'Ya existe un usuario registrado con el correo electrónico',
+        );
 
       const role = await RoleModel.findOne({ name: 'AFFILIATE' });
-      if (!role) throw CustomError.notFound('No existen los recursos necesarios para continuar con este proceso');
+      if (!role)
+        throw CustomError.notFound(
+          'No existen los recursos necesarios para continuar con este proceso',
+        );
 
       const password = generatePassword();
 
@@ -48,10 +63,14 @@ export class UsersDataSourceImpl implements UsersDataSource {
     const { id, name, lastName, email } = updateUserDto;
     try {
       const user = await UserModel.findById(id);
-      if (!user) throw CustomError.notFound('El usuario no existe o no esta registrado.');
+      if (!user)
+        throw CustomError.notFound(
+          'El usuario no existe o no esta registrado.',
+        );
 
       const emailExists = await UserModel.findOne({ email, _id: { $ne: id } });
-      if (emailExists) throw CustomError.notFound('Ya existe un usuario con el email deseado');
+      if (emailExists)
+        throw CustomError.notFound('Ya existe un usuario con el email deseado');
 
       user.set({
         name,
@@ -73,7 +92,8 @@ export class UsersDataSourceImpl implements UsersDataSource {
     const { id } = getUserDto;
     try {
       const exists = await UserModel.findById(id);
-      if (!exists) throw CustomError.notFound('El usuario solicitado no existe');
+      if (!exists)
+        throw CustomError.notFound('El usuario solicitado no existe');
 
       return UserMapper.userEntityFromObject(exists);
     } catch (error) {
@@ -105,7 +125,9 @@ export class UsersDataSourceImpl implements UsersDataSource {
     try {
       const exists = await UserModel.findById(id);
       if (!exists) {
-        throw CustomError.badRequest('El usuario no se encuentra registrado en el sistema.');
+        throw CustomError.notFound(
+          'El usuario no se encuentra registrado en el sistema.',
+        );
       }
 
       // TODO: DELETE CUSTOMER | USER DATA

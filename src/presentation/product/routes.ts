@@ -14,6 +14,7 @@ export class ProductRoutes {
     // routes
     router.post('/create', controller.createProduct);
     router.put('/update/:id', controller.updateProduct);
+    router.delete('/delete/:id', controller.deleteProduct);
 
     return router;
   }

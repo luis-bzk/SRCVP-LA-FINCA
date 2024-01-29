@@ -1,10 +1,14 @@
 import { ProductModel } from '../../data';
 import { Product } from '../../domain/entities';
 import { CustomError } from '../../domain/errors';
-import { CreateProductDto, UpdateProductDto } from '../../domain/dtos';
+import { ProductMapper } from '../mappers/product.mapper';
 import { ProductDataSource } from '../../domain/dataSources';
 import { calTotalPriceProduct, generateSlug } from '../../utils';
-import { ProductMapper } from '../mappers/product.mapper';
+import {
+  CreateProductDto,
+  DeleteProductDto,
+  UpdateProductDto,
+} from '../../domain/dtos';
 
 export class ProductDataSourceImpl implements ProductDataSource {
   async create(createProductDto: CreateProductDto): Promise<Product> {
@@ -123,6 +127,33 @@ export class ProductDataSourceImpl implements ProductDataSource {
 
       const productUpdate = await exists.save();
       return ProductMapper.entityFromObject(productUpdate);
+    } catch (error) {
+      if (error instanceof CustomError) {
+        throw error;
+      }
+
+      console.log(error);
+      throw CustomError.internalServer();
+    }
+  }
+
+  async delete(deleteProductDto: DeleteProductDto): Promise<{}> {
+    const { id } = deleteProductDto;
+
+    try {
+      const exists = await ProductModel.findById(id);
+      if (!exists) {
+        throw CustomError.notFound(
+          'El producto no se encuentra registrado en el sistema',
+        );
+      }
+
+      const deleteProduct = await ProductModel.deleteOne({ _id: id });
+      if (deleteProduct.deletedCount === 0) {
+        throw CustomError.notFound('No se pudo eliminar el producto');
+      }
+
+      return {};
     } catch (error) {
       if (error instanceof CustomError) {
         throw error;
